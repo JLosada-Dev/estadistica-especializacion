@@ -1,6 +1,6 @@
 # Guía de exposición — Análisis completo de un retailer online
 
-Guía para entender y presentar el notebook `06-retail-analisis-completo.ipynb`. Cada sección dice qué se hizo, qué dio y la frase clave para exponer.
+Guía para entender y presentar el notebook `Taller_4_retail_analisis_completo.ipynb`. Cada sección dice qué se hizo, qué dio y la frase clave para exponer.
 
 ---
 

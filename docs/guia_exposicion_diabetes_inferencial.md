@@ -1,6 +1,6 @@
 # Guía de exposición — Diabetes, Estadística Inferencial
 
-Guía para entender y presentar el notebook `05-diabetes-inferencial.ipynb`. Cada sección dice qué se hizo, qué dio y la frase clave para exponer.
+Guía para entender y presentar el notebook `Taller_3_diabetes_inferencial.ipynb`. Cada sección dice qué se hizo, qué dio y la frase clave para exponer.
 
 ---
 
