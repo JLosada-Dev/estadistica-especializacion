@@ -125,8 +125,11 @@ $RECYCLE.BIN/
 .Trash-*
 
 # =========================================
-# Datos (NO subir datos crudos/sensibles)
+# Datos
 # =========================================
+# Política: versionamos SOLO los datasets RAW que son fuente de verdad
+# (para reproducibilidad). Lo procesado/derivado se regenera con los
+# notebooks y NO se versiona. Lo pesado se trae por URL desde data.py.
 data/raw/*
 data/processed/*
 data/external/*
@@ -150,7 +153,14 @@ data/interim/*
 *.sqlite
 *.sqlite3
 
-# Excepción: datos de ejemplo pequeños que sí quieras versionar
+# --- Excepciones: datasets RAW fuente que SÍ se versionan ---
+# (las negaciones van al final para ganar a las reglas de arriba)
+!data/raw/titanic.csv
+!data/raw/diabetes.tab.txt
+!data/raw/datos_taller.csv
+# Procesado versionado por excepción: Taller_3 compara con/sin limpieza (~20K)
+!data/processed/diabetes_limpio.csv
+# Datos de ejemplo pequeños
 !data/example/*.csv
 
 # =========================================
