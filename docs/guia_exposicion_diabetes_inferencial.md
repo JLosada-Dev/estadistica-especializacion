@@ -1,126 +1,133 @@
 # Guía de exposición — Taller 3, Diabetes y Estadística Inferencial
 
-Guía para entender y presentar el notebook `Taller_3_diabetes_inferencial.ipynb`. Pensada para aprender el contenido y exponerlo con fluidez. Cada sección dice qué se hizo, por qué, qué dio y la frase clave para decir en voz alta.
+Guía pensada para **entender de verdad** cada parte del notebook `Taller_3_diabetes_inferencial.ipynb` y poder exponerlo con tranquilidad, sin tecnicismos. Cada concepto se explica primero con palabras simples y un ejemplo, y después se conecta con lo que hicimos.
 
 ---
 
-## La idea en una frase
+## La historia en una frase
 
-El objetivo fue descubrir **qué factores hacen que la diabetes avance más rápido o más lento** en un paciente. Se trabajó con 442 pacientes y se aplicaron las herramientas de estadística inferencial vistas en clase. La respuesta corta es que el avance lo explican sobre todo el **peso, los triglicéridos y la presión arterial**, y que el **sexo no influye**.
+Teníamos 442 pacientes con diabetes y queríamos saber **qué hace que la enfermedad avance rápido o lento**. Después de aplicar varias herramientas estadísticas, la respuesta fue clara: lo que más influye es el **peso, los triglicéridos y la presión arterial**, mientras que el **sexo no tiene nada que ver**.
 
-## Qué es la estadística inferencial (para arrancar la charla)
+## Antes de empezar, dos ideas que se repiten todo el tiempo
 
-La estadística descriptiva solo resume lo que se ve, promedios y gráficos. La **inferencial va un paso más allá**, saca conclusiones y mide si son confiables o producto del azar. La herramienta central es la **prueba de hipótesis**, que funciona así, se plantea una afirmación a refutar (la hipótesis nula, por ejemplo "el sexo no influye"), se calcula un **p-valor**, y si ese valor es menor a 0.05 se concluye que el resultado no es casualidad.
+Si entendés estas dos cosas, entendés el 80% del taller.
 
-## El dataset en una frase
+**1. ¿Qué es la estadística inferencial?**
+Imaginá que probás una cucharada de sopa para saber si le falta sal. No te tomás toda la olla, con una cucharada **inferís** cómo está el resto. Eso es la estadística inferencial: sacar conclusiones generales a partir de una muestra, y además decir **qué tan confiable** es esa conclusión.
 
-442 pacientes con diabetes, 10 medidas clínicas (edad, sexo, peso o BMI, presión y seis análisis de sangre llamados S1 a S6) y una variable objetivo `Y` que mide cuánto avanzó la enfermedad un año después.
+**2. ¿Qué es el p-valor?**
+Es el número que nos dice si un resultado es **real o pura casualidad**. La regla es simple:
+- **p menor a 0.05** → el resultado es real, no es suerte. "Esto significa algo."
+- **p mayor a 0.05** → podría ser casualidad. "No hay evidencia suficiente."
 
----
+Pensalo como un detector de coincidencias. Si tirás una moneda 3 veces y salen 3 caras, podría ser suerte (p alto). Si salen 20 caras seguidas, ya no es suerte, la moneda está cargada (p bajo).
 
-## Recorrido por secciones
+## Los datos en una frase
 
-### 1. Estadística descriptiva
-- **Qué se hizo.** Una tabla con el promedio, la dispersión y la forma de cada variable.
-- **Por qué.** Antes de inferir nada conviene conocer cómo se comporta cada variable, es la foto de partida.
-- **Dato útil.** La asimetría de `Y` ya anticipa que no será una distribución normal, tiene una cola hacia la derecha.
-- **Frase clave.** "Primero miramos cómo se comporta cada variable."
-
-### 2. Distribución normal
-- **Qué se hizo.** Se verificó si las variables tienen forma de campana, con la prueba de Shapiro y los gráficos Q-Q. Se aplicó la regla 68-95-99.7 y la tipificación Z.
-- **Qué significa la tipificación Z.** Es transformar una variable para expresarla en "cuántas desviaciones estándar se aleja del promedio", lo que permite comparar y calcular probabilidades.
-- **Qué dio.** Ninguna variable es perfectamente normal. El peso se acerca bastante, la progresión menos.
-- **Por qué importa.** El T-Test y el ANOVA suponen normalidad, así que de aquí en más cada prueba se acompaña con una alternativa que no la necesita.
-- **Frase clave.** "Los datos no son perfectamente normales, así que tomamos precauciones."
-
-### 3. Probabilidad condicional y Bayes
-- **Qué se hizo.** Una tabla que cruza peso alto o bajo con progresión alta o baja, y se calcularon probabilidades condicionales.
-- **Qué es una probabilidad condicional.** Es la probabilidad de algo **sabiendo** otra cosa, por ejemplo la probabilidad de progresión alta sabiendo que el paciente tiene peso alto.
-- **Qué dio.** Sin saber nada, la probabilidad de progresión alta es 50%. Si el peso es alto, sube a **71%**. Si es bajo, baja a **30%**. El chi-cuadrado confirma que la relación no es casualidad.
-- **Frase clave.** "Saber el peso de un paciente cambia mucho lo que podemos esperar de su enfermedad."
-
-### 4. Distribución binomial
-- **Qué se hizo.** Se modeló cuántos pacientes con progresión alta se esperarían en un grupo elegido al azar.
-- **Cuándo aplica la binomial.** Cuando algo tiene solo dos resultados posibles (alto o no alto) y se repite varias veces de forma independiente.
-- **Qué dio.** En diez pacientes lo más probable es cinco, encontrar ocho o más es raro.
-- **Frase clave.** "Una forma de razonar con probabilidades sobre grupos de pacientes."
-
-### 5. T-Test, progresión por sexo
-- **Qué se hizo.** Se comparó la progresión entre hombres y mujeres con tres pruebas, más el tamaño del efecto.
-- **Por qué tres pruebas.** El T-Test es la clásica, Mann-Whitney es la versión que no exige normalidad, y el d de Cohen mide si la diferencia, aunque exista, es grande o trivial.
-- **Qué dio.** No hay diferencia, y el tamaño del efecto es prácticamente cero.
-- **Frase clave.** "El sexo no influye en cómo avanza la diabetes."
-
-### 6. ANOVA, progresión por peso
-- **Qué se hizo.** Se dividió el peso en tres grupos, bajo, medio y alto, y se comparó la progresión entre ellos, con prueba post-hoc de Tukey.
-- **Qué es el ANOVA y qué agrega Tukey.** El ANOVA dice si **al menos un grupo** difiere de los demás, pero no cuál. Tukey completa el análisis indicando **entre qué grupos** está la diferencia.
-- **Qué dio.** El peso explica cerca del 30% de la variación, y los tres grupos se diferencian entre sí de forma escalonada.
-- **Frase clave.** "A más peso, la enfermedad avanza más, paso a paso."
-
-### 7. Análisis multivariado y auditoría de la limpieza
-- **Qué se hizo.** Un ranking de todos los factores y una regresión que los mira a todos juntos. Además se revisaron las decisiones de limpieza del dataset.
-- **Por qué la regresión es la clave.** Las secciones anteriores miran un factor por vez. La regresión múltiple los considera **simultáneamente**, y revela cuáles siguen importando cuando se controla por el resto.
-- **Qué dio.**
-  - Los factores juntos explican cerca del **50%** de la progresión.
-  - Mandan tres, **peso y triglicéridos casi empatados, y presión detrás**.
-  - Edad y glucosa dejan de importar al considerar el resto.
-  - Conservar los valores atípicos fue correcto, no distorsionan el modelo.
-  - Sobre la limpieza, quitar `S2` estuvo bien, pero quitar `S4` sacrificó un buen predictor.
-- **Frase clave.** "La progresión la explica un trío de factores, no uno solo. Y el análisis nos sirvió para revisar la limpieza."
-
-### 8. Comparación visual, sin limpiar y limpio
-- **Qué se hizo.** Dos mapas de correlación lado a lado, el dataset crudo y el limpio.
-- **Qué dio.** El limpio es más fácil de leer, sin las repeticiones de información del crudo, como la correlación de 0.90 entre `S1` y `S2`.
-- **Frase clave.** "Limpiar no cambió las conclusiones, pero las hizo más claras."
-
-### 9. Tablero resumen
-- **Qué se hizo.** Un panel único que reúne lo principal, los indicadores, el ranking de factores, la probabilidad condicional por peso, las comparaciones por sexo y por peso, y el peso final de cada factor en el modelo.
-- **Para qué sirve en la exposición.** Es la diapositiva ideal para cerrar, muestra todo el análisis de un vistazo.
-- **Frase clave.** "Todo el análisis condensado en una imagen."
-
-### 10. Conclusiones
-- Se presentan como una **tabla de hipótesis**, cada afirmación con su prueba y su resultado, más conclusiones por tema.
-- El avance de la diabetes lo explica un trío, **peso, triglicéridos y presión**.
-- El **sexo no influye**.
-- Verificar los supuestos fue clave para confiar en los resultados.
-- El análisis sirvió para auditar la limpieza, los dos pasos se retroalimentan.
+Cada paciente tiene 10 medidas (edad, sexo, peso o BMI, presión y seis análisis de sangre llamados S1 a S6) y un número final `Y` que mide **cuánto avanzó su diabetes un año después**. Ese `Y` es lo que queremos explicar.
 
 ---
 
-## La tabla de hipótesis (el corazón de la exposición)
+## Recorrido por el notebook, sección por sección
 
-Conviene tener esta tabla a mano, resume todo el método de un golpe.
+### 1. Estadística descriptiva — la foto inicial
+- **Qué hicimos.** Calculamos promedios y vimos cómo se reparte cada variable.
+- **Por qué.** Es como mirar el paisaje antes de salir a caminar. Necesitamos conocer los datos antes de sacar conclusiones.
+- **Para decir.** "Arrancamos conociendo cómo se comporta cada medida."
 
-| Hipótesis planteada | Prueba aplicada | Resultado |
+### 2. Distribución normal — ¿los datos tienen forma de campana?
+- **La idea simple.** Muchas cosas en la naturaleza se reparten en forma de **campana**: la mayoría de los valores en el medio y pocos en los extremos. La estatura, por ejemplo. A eso se le llama distribución normal.
+- **Qué hicimos.** Revisamos si nuestras variables tenían esa forma de campana, con un gráfico (el Q-Q plot) y una prueba (la de Shapiro).
+- **Qué encontramos.** Ninguna tiene forma de campana perfecta. El peso se acerca, la progresión no tanto.
+- **Por qué importa.** Algunas pruebas que vienen después **suponen** que los datos son normales. Como no lo son del todo, decidimos acompañar cada prueba con una versión de respaldo que no necesita esa forma de campana.
+- **Para decir.** "Los datos no son una campana perfecta, así que tomamos precauciones en todo el análisis."
+
+### 3. Probabilidad condicional y Bayes — ¿saber el peso cambia algo?
+- **La idea simple.** Una probabilidad condicional es la chance de algo **sabiendo otra cosa**. Por ejemplo, la chance de que llueva en general es una, pero la chance de que llueva **sabiendo que el cielo está negro** es otra mucho mayor.
+- **Qué hicimos.** Comparamos la chance de progresión alta en general contra la chance sabiendo que el paciente tiene peso alto.
+- **Qué encontramos.** Sin saber nada, la chance de progresión alta es **50%**. Pero si el paciente tiene peso alto, sube a **71%**, y si tiene peso bajo, baja a **30%**.
+- **Para decir.** "Saber el peso de un paciente cambia bastante lo que podemos esperar de su enfermedad."
+
+### 4. Distribución binomial — contar casos en un grupo
+- **La idea simple.** La binomial sirve para situaciones de **sí o no** que se repiten. Como tirar una moneda 10 veces y preguntarse cuántas caras saldrán.
+- **Qué hicimos.** Calculamos, si tomamos pacientes al azar, cuántos esperaríamos que tengan progresión alta.
+- **Qué encontramos.** En un grupo de 10, lo más probable es que 5 tengan progresión alta. Encontrar 8 o más sería raro.
+- **Para decir.** "Una forma de razonar con probabilidades sobre grupos de pacientes."
+
+### 5. T-Test — ¿hombres y mujeres avanzan distinto?
+- **La idea simple.** El T-Test sirve para responder **¿estos dos grupos son realmente distintos, o la diferencia es casualidad?** Compara los promedios de dos grupos.
+- **Qué hicimos.** Comparamos la progresión entre hombres y mujeres. Y para estar seguros, lo confirmamos con otra prueba (Mann-Whitney) y medimos el **tamaño de la diferencia** (el d de Cohen).
+- **Por qué tres cosas.** El T-Test dice si hay diferencia. Mann-Whitney lo confirma sin depender de la forma de campana. Y el tamaño del efecto dice si esa diferencia, aunque exista, es **grande o insignificante**.
+- **Qué encontramos.** No hay diferencia, y el tamaño es prácticamente cero. El sexo no importa.
+- **Para decir.** "El sexo no influye en cómo avanza la diabetes, lo confirmamos por tres caminos distintos."
+
+### 6. ANOVA — ¿el peso marca una diferencia?
+- **La idea simple.** El ANOVA es como el T-Test pero para **más de dos grupos**. Divide a los pacientes en grupos (peso bajo, medio y alto) y pregunta si avanzan distinto.
+- **Qué agrega Tukey.** El ANOVA dice "al menos un grupo es distinto" pero no cuál. La prueba de Tukey completa la frase y dice **exactamente entre qué grupos** está la diferencia.
+- **Qué encontramos.** El peso explica cerca del **30%** de por qué unos avanzan más que otros, y los tres grupos se diferencian claramente. A más peso, más rápido avanza.
+- **Para decir.** "A más peso, la diabetes avanza más, de manera escalonada."
+
+### 7. Análisis multivariado — mirar todos los factores juntos
+- **La idea simple.** Hasta acá miramos un factor por vez. Pero en la realidad todos actúan al mismo tiempo. La **regresión** mira todos los factores juntos y dice cuáles siguen importando cuando se consideran los demás.
+- **Una analogía.** Es como un equipo de fútbol. Mirar a un jugador solo engaña, porque su rendimiento depende de los compañeros. La regresión mira a todo el equipo a la vez.
+- **Qué encontramos.**
+  - Todos los factores juntos explican cerca del **50%** del avance.
+  - Los tres que más pesan son **peso y triglicéridos casi empatados, y la presión detrás**.
+  - La edad y la glucosa dejan de importar cuando se considera el resto.
+- **Bonus, auditoría de la limpieza.** Aprovechamos para revisar decisiones que se habían tomado al limpiar los datos. Descubrimos que eliminar la variable `S4` fue discutible, porque en realidad era un buen predictor.
+- **Para decir.** "El avance lo explica un equipo de factores, no uno solo. Y de paso revisamos nuestra propia limpieza."
+
+### 8. Comparación, datos sin limpiar y limpios
+- **Qué hicimos.** Pusimos lado a lado dos mapas de correlación, antes y después de limpiar.
+- **Qué encontramos.** El limpio es más fácil de leer, sin información repetida.
+- **Para decir.** "Limpiar no cambió las conclusiones, pero las hizo más claras."
+
+### 9. Tablero resumen — todo en una imagen
+- **Qué es.** Un panel que junta lo principal del análisis en una sola vista, los indicadores, qué factores importan, las comparaciones por sexo y por peso, y el peso final de cada factor.
+- **Para qué.** Es la diapositiva ideal para cerrar la exposición.
+- **Para decir.** "Todo el análisis condensado en una imagen."
+
+### 10. Conclusiones — organizadas por hipótesis
+- Las conclusiones están armadas como una **lista de preguntas que nos hicimos y qué respondió cada prueba** (ver la tabla más abajo).
+- En resumen: el avance lo explican **peso, triglicéridos y presión**, el **sexo no influye**, y verificar los supuestos fue clave para confiar en los resultados.
+
+---
+
+## La tabla de hipótesis (lo más importante para exponer)
+
+Esta tabla resume todo el método. Si la entendés, podés explicar el taller entero.
+
+| Lo que nos preguntamos | Cómo lo probamos | Qué salió |
 |---|---|---|
-| Las variables son normales | Shapiro-Wilk, Q-Q | Rechazada, ninguna lo es |
-| El BMI se asocia a la progresión | Chi-cuadrado | Confirmada |
-| El sexo influye en la progresión | T-Test, Mann-Whitney | Rechazada |
-| El BMI influye en la progresión | ANOVA, Tukey | Confirmada, efecto grande |
-| Un solo factor explica la progresión | Regresión múltiple | Rechazada, son varios |
+| ¿Los datos tienen forma de campana? | Shapiro y Q-Q plot | No, ninguno |
+| ¿El peso se relaciona con el avance? | Chi-cuadrado | Sí, relación real |
+| ¿El sexo influye en el avance? | T-Test y Mann-Whitney | No influye |
+| ¿El peso influye en el avance? | ANOVA y Tukey | Sí, y bastante |
+| ¿Un solo factor explica todo? | Regresión múltiple | No, son varios |
 
 ---
 
-## Mensajes para cerrar la exposición
+## Las 4 frases para cerrar
 
-1. **No es un solo factor.** Al principio parecía que solo el peso importaba, pero el análisis completo mostró que los triglicéridos pesan igual y la presión también.
-2. **El sexo no influye**, y se confirmó por tres caminos distintos.
-3. **Verificar supuestos importa.** Como los datos no eran normales, se usaron pruebas de respaldo que confirmaron todo.
-4. **Limpieza y análisis van juntos.** El análisis hizo ver que una decisión de limpieza, quitar `S4`, fue discutible.
+1. **No es un solo culpable.** Parecía que solo el peso importaba, pero también pesan los triglicéridos y la presión.
+2. **El sexo no influye**, y lo confirmamos tres veces para estar seguros.
+3. **Desconfiar y verificar dio resultado.** Como los datos no eran normales, usamos pruebas de respaldo que confirmaron todo.
+4. **Limpiar y analizar van de la mano.** El análisis nos hizo ver que una decisión de limpieza fue discutible.
 
-## Posibles preguntas del público
+## Preguntas que te pueden hacer (y cómo responder)
 
-- **¿Por qué no usaron Poisson o la hipergeométrica?** Porque este dataset no tiene conteos por tiempo ni muestreos sin reemplazo donde tendrían sentido. Usarlas sería forzar la herramienta.
-- **¿Por qué tantas pruebas para lo mismo?** Porque los datos no son normales. Cada prueba paramétrica se confirma con una no paramétrica para estar seguros.
-- **¿Qué significa que explique el 50%?** Que con estos factores se da cuenta de la mitad de por qué unos pacientes avanzan más que otros. La otra mitad depende de cosas que no están en el dataset.
-- **¿El peso causa el avance?** El análisis muestra asociación fuerte, no causalidad. Para afirmar causa haría falta un diseño experimental distinto.
+- **¿Por qué no usaron otras distribuciones como Poisson?** Porque no encajan con estos datos. Usarlas sería forzar la herramienta solo para lucirla.
+- **¿Por qué tantas pruebas para lo mismo?** Porque los datos no eran perfectos, así que cada resultado lo confirmamos con una segunda prueba para estar seguros.
+- **¿Qué significa que expliquen el 50%?** Que con estos factores entendemos la mitad de por qué unos pacientes avanzan más. La otra mitad depende de cosas que no estaban en los datos.
+- **¿El peso causa el avance?** Mostramos que están fuertemente relacionados, pero relación no es lo mismo que causa. Para afirmar que lo causa haría falta otro tipo de estudio.
 
-## Glosario rápido
+## Mini diccionario (en palabras simples)
 
-- **p-valor.** Si es menor a 0.05, el resultado no es casualidad.
-- **Hipótesis nula.** La afirmación que se intenta refutar, por defecto "no hay efecto".
-- **Tamaño del efecto (d de Cohen).** Mide si una diferencia es grande o trivial, más allá de si es significativa.
-- **Correlación.** Qué tan juntas se mueven dos variables, de -1 a 1.
-- **R cuadrado.** Qué porcentaje de la variación logra explicar el modelo.
-- **Prueba no paramétrica.** Versión de una prueba que no necesita que los datos sean normales.
-- **Tipificación Z.** Expresar un valor en cuántas desviaciones estándar se aleja del promedio.
+- **p-valor.** El detector de casualidad. Menor a 0.05 significa "esto es real".
+- **Hipótesis nula.** La afirmación aburrida que intentamos refutar, normalmente "no pasa nada / no hay efecto".
+- **Distribución normal.** La famosa campana, la mayoría de los valores en el medio y pocos en los extremos.
+- **Tamaño del efecto.** No solo si hay diferencia, sino si es grande o insignificante.
+- **Correlación.** Qué tan de la mano se mueven dos cosas.
+- **R cuadrado.** El porcentaje de algo que el modelo logra explicar.
+- **Prueba no paramétrica.** Una prueba que funciona aunque los datos no tengan forma de campana.
+- **Regresión.** Mira todos los factores juntos y dice cuánto pesa cada uno.
